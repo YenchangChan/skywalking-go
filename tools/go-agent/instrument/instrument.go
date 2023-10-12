@@ -42,7 +42,8 @@ import (
 var instruments = []api.Instrument{
 	runtime.NewInstrument(),
 	agentcore.NewInstrument(),
-	reporter.NewGRPCInstrument(),
+	//reporter.NewGRPCInstrument(),
+	reporter.NewKafkaInstrument(),
 	entry.NewInstrument(),
 	logger.NewInstrument(),
 	plugins.NewInstrument(),

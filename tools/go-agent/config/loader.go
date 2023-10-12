@@ -52,7 +52,8 @@ type Agent struct {
 }
 
 type Reporter struct {
-	GRPC GRPCReporter `yaml:"grpc"`
+	GRPC  GRPCReporter  `yaml:"grpc"`
+	Kafka KafkaReporter `yaml:"kafka"`
 }
 
 type Log struct {
@@ -82,6 +83,11 @@ type GRPCReporter struct {
 	Authentication   StringValue     `yaml:"authentication"`
 	CDSFetchInterval StringValue     `yaml:"cds_fetch_interval"`
 	TLS              GRPCReporterTLS `yaml:"tls"`
+}
+
+type KafkaReporter struct {
+	Brokers StringValue `yaml:"brokers"`
+	Topic   StringValue `yaml:"topic"`
 }
 
 type GRPCReporterTLS struct {

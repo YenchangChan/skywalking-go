@@ -144,7 +144,7 @@ import (
 var {{.GetGlobalLoggerLinkMethod}} func() interface{}
 
 func (t *Tracer) InitTracer(extend map[string]interface{}) {
-	rep, err := reporter.{{.GRPCReporterFuncName}}(t.Log)
+	rep, err := reporter.{{.ReporterFuncName}}(t.Log)
 	if err != nil {
 		t.Log.Errorf("cannot initialize the reporter: %v", err)
 		return
@@ -162,11 +162,11 @@ func (t *Tracer) InitTracer(extend map[string]interface{}) {
 		t.Log.Errorf("cannot initialize the SkyWalking Tracer: %v", err)
 	}
 }`, struct {
-		GRPCReporterFuncName      string
+		ReporterFuncName          string
 		GetGlobalLoggerLinkMethod string
 		Config                    *config.Config
 	}{
-		GRPCReporterFuncName:      consts.GRPCInitFuncName,
+		ReporterFuncName:          consts.KafkaInitFuncName,
 		GetGlobalLoggerLinkMethod: consts.GlobalLoggerGetMethodName,
 		Config:                    config.GetConfig(),
 	})))

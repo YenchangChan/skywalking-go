@@ -34,6 +34,7 @@ import (
 	_ "github.com/apache/skywalking-go/log"
 
 	// imports configuration and starter for gRPC
+	_ "github.com/twmb/franz-go/pkg/kgo"
 	_ "google.golang.org/grpc"
 	_ "google.golang.org/grpc/backoff"
 	_ "google.golang.org/grpc/balancer"
@@ -54,6 +55,7 @@ import (
 	_ "google.golang.org/grpc/resolver/manual"
 	_ "google.golang.org/grpc/stats"
 	_ "google.golang.org/grpc/status"
+	_ "google.golang.org/protobuf/proto"
 
 	// imports protocols between agent and backend
 	_ "skywalking.apache.org/repo/goapi/collect/agent/configuration/v3"

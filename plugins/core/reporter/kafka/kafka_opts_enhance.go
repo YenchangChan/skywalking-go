@@ -15,9 +15,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
-package consts
+package kafka
 
-const (
-	GRPCInitFuncName  = "GRPCReporterInit"
-	KafkaInitFuncName = "KafkaReporterInit"
-)
+type KReporterOption func(r *kafkaReporter)
+
+// WithCheckInterval setup service and endpoint registry check interval
+func WithTopic(topic string) KReporterOption {
+	return func(r *kafkaReporter) {
+		r.topic = topic
+	}
+}
