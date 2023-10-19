@@ -30,8 +30,11 @@ agent:
 
 reporter:
   kafka:
-      brokers: ${SW_AGENT_REPORTER_KAFKA_BROKERS:127.0.0.1:9092}
-      topic: ${SW_AGENT_REPORTER_KAFKA_TOPIC:sw_span}
+      brokers: ${SW_KAFKA_BOOTSTRAP_SERVERS:127.0.0.1:9092}
+      log_topic: ${SW_PLUGIN_KAFKA_TOPIC_LOGGING:skywalking-logs}
+      metric_topic: ${SW_PLUGIN_KAFKA_TOPIC_METRICS:skywalking-metrics}
+      segment_topic: ${SW_PLUGIN_KAFKA_TOPIC_SEGMENT:skywalking-segments}
+
   # grpc:
   #   # The gRPC server address of the backend service.
   #   backend_service: ${SW_AGENT_REPORTER_GRPC_BACKEND_SERVICE:127.0.0.1:11800}

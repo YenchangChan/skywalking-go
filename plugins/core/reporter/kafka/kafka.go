@@ -45,7 +45,9 @@ func NewkafkaReporter(logger operator.LogOperator, brokers string, opts ...KRepo
 
 	kopts := []kgo.Opt{
 		kgo.SeedBrokers(strings.Split(brokers, ",")...),
-		kgo.DefaultProduceTopic(r.topic),
+		kgo.DefaultProduceTopic(r.log_topic),
+		kgo.DefaultProduceTopic(r.metric_topic),
+		kgo.DefaultProduceTopic(r.segment_topic),
 	}
 
 	kopts = append(kopts, kgo.AllowAutoTopicCreation())
@@ -65,10 +67,12 @@ type kafkaReporter struct {
 	entity *reporter.Entity
 	logger operator.LogOperator
 
-	topic  string
-	conn   *kgo.Client
-	ctx    context.Context
-	cancel context.CancelFunc
+	log_topic     string
+	metric_topic  string
+	segment_topic string
+	conn          *kgo.Client
+	ctx           context.Context
+	cancel        context.CancelFunc
 
 	// bootFlag is set if Boot be executed
 	bootFlag         bool
@@ -147,7 +151,7 @@ func (r *kafkaReporter) SendTracing(spans []reporter.ReportedSpan) {
 			r.logger.Errorf("reporter segment err %v", err)
 		}
 	}()
-	r.produce(segmentObject)
+	r.produce(r.segment_topic, segmentObject)
 }
 
 func (r *kafkaReporter) SendMetrics(metrics []reporter.ReportedMeter) {
@@ -196,7 +200,7 @@ func (r *kafkaReporter) SendMetrics(metrics []reporter.ReportedMeter) {
 		}
 	}()
 
-	r.produce(meters[0])
+	r.produce(r.metric_topic, meters[0])
 }
 
 func (r *kafkaReporter) SendLog(log *logv3.LogData) {
@@ -205,7 +209,7 @@ func (r *kafkaReporter) SendLog(log *logv3.LogData) {
 			r.logger.Errorf("reporter log err %v", err)
 		}
 	}()
-	r.produce(log)
+	r.produce(r.log_topic, log)
 }
 
 func (r *kafkaReporter) convertLabels(labels map[string]string) []*agentv3.Label {
@@ -226,7 +230,7 @@ func (r *kafkaReporter) Close() {
 	r.conn.Close()
 }
 
-func (r *kafkaReporter) produce(m interface{}) {
+func (r *kafkaReporter) produce(topic string, m interface{}) {
 	var (
 		raw []byte
 		err error
@@ -243,7 +247,7 @@ func (r *kafkaReporter) produce(m interface{}) {
 		r.logger.Errorf("marshal error %v", err)
 		return
 	}
-	record := &kgo.Record{Topic: r.topic, Value: raw}
+	record := &kgo.Record{Topic: topic, Value: raw}
 	if err := r.conn.Ping(r.ctx); err != nil {
 		r.logger.Warnf("kafka disconnect caused by: %v", err)
 		return

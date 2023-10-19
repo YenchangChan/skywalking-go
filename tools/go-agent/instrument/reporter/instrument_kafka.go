@@ -117,7 +117,7 @@ import (
 
 func {{.InitFuncName}}(logger operator.LogOperator) (Reporter, error) {
 	var opts []KReporterOption
-	opts = append(opts, WithTopic({{.Config.Reporter.Kafka.Topic.ToGoStringValue}}))
+	opts = append(opts, WithTopic({{.Config.Reporter.Kafka.LogTopic.ToGoStringValue}}, {{.Config.Reporter.Kafka.MetricsTopic.ToGoStringValue}}, {{.Config.Reporter.Kafka.SegmentTopic.ToGoStringValue}}))
 
 	return NewkafkaReporter(logger, {{.Config.Reporter.Kafka.Brokers.ToGoStringValue}}, opts...)
 }

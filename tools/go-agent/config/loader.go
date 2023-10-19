@@ -86,8 +86,10 @@ type GRPCReporter struct {
 }
 
 type KafkaReporter struct {
-	Brokers StringValue `yaml:"brokers"`
-	Topic   StringValue `yaml:"topic"`
+	Brokers      StringValue `yaml:"brokers"`
+	LogTopic     StringValue `yaml:"log_topic"`
+	MetricsTopic StringValue `yaml:"metrics_topic"`
+	SegmentTopic StringValue `yaml:"segment_topic"`
 }
 
 type GRPCReporterTLS struct {

@@ -20,8 +20,10 @@ package kafka
 type KReporterOption func(r *kafkaReporter)
 
 // WithCheckInterval setup service and endpoint registry check interval
-func WithTopic(topic string) KReporterOption {
+func WithTopic(log, metric, segment string) KReporterOption {
 	return func(r *kafkaReporter) {
-		r.topic = topic
+		r.log_topic = log
+		r.metric_topic = metric
+		r.segment_topic = segment
 	}
 }
