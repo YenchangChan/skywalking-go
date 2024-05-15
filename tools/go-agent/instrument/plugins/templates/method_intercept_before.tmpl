@@ -1,8 +1,7 @@
 defer func() {
 	if err := recover(); err != nil {
 		// log error
-		log.Errorf("execute interceptor before invoke error, instrument name: %s, interceptor name: %s, function ID: %s, error: %v, stack: %s",
-		    "{{.InstrumentName}}", "{{.InterceptorDefineName}}", "{{.FuncID}}", err, tracing.DebugStack())
+		return
 	}
 }()
 invocation = &operator.realInvocation{}
@@ -28,8 +27,8 @@ invocation.changeArgCallback = func(index int, value interface{}) {
 // real invoke
 if err := {{.InterceptorVarName}}.BeforeInvoke(invocation); err != nil {
 	// using go2sky log error
-	log.Warnf("execute interceptor before invoke error, instrument name: %s, interceptor name: %s, function ID: %s, error: %v",
-    		    "{{.InstrumentName}}", "{{.InterceptorDefineName}}", "{{.FuncID}}", err)
+	// log.Warnf("execute interceptor before invoke error, instrument name: %s, interceptor name: %s, function ID: %s, error: %v",
+    //		    "{{.InstrumentName}}", "{{.InterceptorDefineName}}", "{{.FuncID}}", err)
 	return {{ range $index, $value := .Results -}}
 {{$value.DefaultValueAsString}},
 {{- end}}invocation, false
