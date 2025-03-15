@@ -146,7 +146,7 @@ var {{.GetGlobalLoggerLinkMethod}} func() interface{}
 func (t *Tracer) InitTracer(extend map[string]interface{}) {
 	rep, err := reporter.{{.ReporterFuncName}}(t.Log)
 	if err != nil {
-		t.Log.Errorf("cannot initialize the reporter: %v", err)
+		//t.Log.Errorf("cannot initialize the reporter: %v", err)
 		return
 	}
 	entity := NewEntity({{.Config.Agent.ServiceName.ToGoStringValue}}, {{.Config.Agent.InstanceEnvName.ToGoStringValue}})
